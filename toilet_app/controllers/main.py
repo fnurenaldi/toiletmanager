@@ -10,17 +10,23 @@ SECOND_TOILET = 2
 def index():
     return render_template('index.html')
 
-@app.route('/status/<int:toilet_id>', methods=["POST"])
+@app.route('/status/<int:toilet_id>', methods=["POST", "GET"])
 def status_update(toilet_id):
-    print(request.json)
-    status = request.json['status']
+    
+    status = None
+    if request.method == 'POST':
+        status = request.json['status']
+        
+    else:
+        status = request.args.get('status')
+
     if MAIN_TOILET == toilet_id:
         socketio.emit('main toilet status',
                       {'data': status},
                       namespace='/test')
 
     elif SECOND_TOILET == toilet_id:
-         socketio.emit('second toilet status',
+        socketio.emit('second toilet status',
                       {'data': status},
                       namespace='/test')
     return "ok"
