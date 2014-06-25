@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        h3 {display:inline-block;}
+    </style>
+
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Toilet App</title>
+</head>
+
+<body>
+    <h1 class="text-center">Toilet App</h1>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Main Toilet</h3>
+                <button type="button" id="main_toilet_status" class="btn btn-lg"></h4>
+            </div>
+
+             <div class="col-md-6">
+                <h3>Second Toilet</h3>
+                <button type="button" id="second_toilet_status" class="btn btn-lg"></h4>
+            </div>
+        </div>
+    </div>
+    
+   
+   
+	
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
+
+    <!-- Socket IO -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js"></script>
+
+   	<!-- Latest compiled and minified JavaScript -->
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+	<script>
+		$(document).ready(function(){
+            var socket = io.connect('http://' + document.domain + ':' + location.port + '/test');
+
+            socket.on('main toilet status', function(msg) {
+                if ("available" === msg.data) {
+                    $('#main_toilet_status').text("Available").addClass("btn-success").removeClass("btn-danger");
+                } else {
+                    $('#main_toilet_status').text("Not Available").addClass("btn-danger").removeClass("btn-success");
+                }
+            });
+
+            socket.on('second toilet status', function(msg) {
+                if ("available" === msg.data) {
+                    $('#second_toilet_status').text("Available").addClass("btn-success").removeClass("btn-danger");;
+                } else {
+                    $('#second_toilet_status').text("Not Available").addClass("btn-danger").removeClass("btn-success");
+                }
+            });
+        });
+	</script>
+</body>
+</html>
